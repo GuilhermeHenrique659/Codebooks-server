@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    container_name: codebooks-db
+    restart: always
+    tty: true
+    ports:
+      - '5432:5432'
+    volumes:
+      - .docker/dbdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=codebooks
