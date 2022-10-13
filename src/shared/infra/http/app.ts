@@ -5,6 +5,7 @@ import { DataSource } from 'typeorm';
 import AppError from '../../errors/AppError';
 import { IRoute } from '../routes/IRoute';
 import { AbstractController } from '../../controller/AbstractController';
+import cors from 'cors'
 
 export class App {
 
@@ -27,6 +28,15 @@ export class App {
     }
 
     public setupApp() {
+        const allowedOrigins = ['http://localhost:3000'];
+
+        const options: cors.CorsOptions = {
+            origin: allowedOrigins
+        };
+
+        // Then pass these options to cors:
+        this.app.use(cors(options));
+
         this.app.use(express.json());
 
         this.setupRoute();
