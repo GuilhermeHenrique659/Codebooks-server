@@ -11,6 +11,7 @@ interface IRouteConfig<C, V = undefined> {
     method: HttpMethod;
     controller: keyof C;
     validation?: keyof V;
+    authentication?: boolean
     url: string;
 }
 

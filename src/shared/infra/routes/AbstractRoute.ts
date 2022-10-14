@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { ExpressAdapter } from "../../adapter/ExpressAdapter";
 import { AbstractController } from "../../controller/AbstractController";
+import { AuthenticateMiddleware } from "../../middleware/AuthenticationMiddleware";
 import { ValidationMiddleware } from "../../middleware/ValidationMiddleware";
 import { AbstractValidation } from "../../validation/AbstractValidation";
 import { IRouteMethod } from "./IRoutesMethod";
@@ -41,6 +42,7 @@ export abstract class AbstractRoute<
             console.log(`[${routeMethod.method}] - Inicializer routes ${this.RouteMethods.prefix} - controller ${routeMethod.controller as string}`);
             this.router[routeMethod.method](
                 routeMethod.url,
+                AuthenticateMiddleware.isAutheticated(routeMethod.authentication),
                 this.validationMiddleware.executeValidate(routeMethod.validation),
                 ExpressAdapter.RouterAdapter(this.controller, routeMethod.controller)
             );

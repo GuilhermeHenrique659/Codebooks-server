@@ -14,6 +14,12 @@ class UserRoutes extends AbstractRoute<UserController, UserValidation> {
                 url: '/',
                 controller: 'createUserHandle',
                 validation: 'validateCreateUser',
+            },
+            {
+                method: HttpMethod.POST,
+                url: '/session',
+                controller: 'createUserSessionHandle',
+                validation: 'validationCreateSession'
             }
         ]
     }

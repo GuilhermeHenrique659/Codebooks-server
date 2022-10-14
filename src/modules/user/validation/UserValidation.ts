@@ -13,4 +13,13 @@ export class UserValidation extends AbstractValidation {
 
         return Schema.validate(request.body, { abortEarly: false });
     }
+
+    public validationCreateSession(request: Request) {
+        const Schema = Joi.object({
+            email: Joi.string().email().required(),
+            password: Joi.string().required()
+        });
+
+        return Schema.validate(request.body, { abortEarly: false })
+    }
 }
