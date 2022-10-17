@@ -6,5 +6,7 @@ export interface IHttpResponse {
 export interface IHttpRequest {
     body?: any;
     params?: any;
-    user?: any;
+    user: {
+        id?: string
+    };
 }

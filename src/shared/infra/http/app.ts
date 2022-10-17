@@ -28,7 +28,7 @@ export class App {
     }
 
     public setupApp() {
-        const allowedOrigins = ['http://localhost:3000'];
+        const allowedOrigins = ['http://localhost:3000', 'http://192.168.0.103:3000'];
 
         const options: cors.CorsOptions = {
             origin: allowedOrigins

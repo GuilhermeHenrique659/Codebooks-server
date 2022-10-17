@@ -9,6 +9,7 @@ export class ExpressAdapter {
             const httpRequest: IHttpRequest = {
                 body: request.body,
                 params: request.params,
+                user: request.user
             };
             const httpResponse = await controller.exeMethod(method, httpRequest);
             return response.status(200).json(httpResponse.body);

@@ -39,7 +39,7 @@ export abstract class AbstractRoute<
 
     public setupRoutes(): void {
         this.RouteMethods.routesConfig.forEach((routeMethod) => {
-            console.log(`[${routeMethod.method}] - Inicializer routes ${this.RouteMethods.prefix} - controller ${routeMethod.controller as string}`);
+            console.log(`[${routeMethod.method}] - Inicializer routes ${this.RouteMethods.prefix}${routeMethod.url} - controller ${routeMethod.controller as string}`);
             this.router[routeMethod.method](
                 routeMethod.url,
                 AuthenticateMiddleware.isAutheticated(routeMethod.authentication),
