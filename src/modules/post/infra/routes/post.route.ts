@@ -20,6 +20,7 @@ class PostRoute extends AbstractRoute<PostController, PostValidation> {
                 method: HttpMethod.GET,
                 url: '/',
                 controller: 'ListPostHandle',
+                validation: 'listPostValidate',
                 authentication: true
             }
         ]

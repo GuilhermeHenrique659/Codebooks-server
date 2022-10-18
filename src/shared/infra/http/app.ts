@@ -1,11 +1,13 @@
 import 'reflect-metadata'
 import express, { NextFunction, Request, Response, Express, Router } from "express";
+import fileupload from 'express-fileupload'
 import "express-async-errors";
 import { DataSource } from 'typeorm';
 import AppError from '../../errors/AppError';
 import { IRoute } from '../routes/IRoute';
 import { AbstractController } from '../../controller/AbstractController';
 import cors from 'cors'
+import uploadConfig from './../../../config/upload';
 
 export class App {
 
@@ -33,6 +35,10 @@ export class App {
         const options: cors.CorsOptions = {
             origin: allowedOrigins
         };
+
+        this.app.use(fileupload())
+
+        this.app.use("/files", express.static(uploadConfig.directory))
 
         // Then pass these options to cors:
         this.app.use(cors(options));

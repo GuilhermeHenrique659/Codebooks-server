@@ -23,7 +23,14 @@ export class PostController extends AbstractController {
     }
 
     public async ListPostHandle(request: IHttpRequest): Promise<IHttpResponse> {
-        const posts = await this._postServiceFactory.getListPostSerive().execute();
+        const page = request.query.page ? Number(request.query.page) : 1;
+        const limit = request.query.limit ? Number(request.query.limit) : 3;
+
+
+        const posts = await this._postServiceFactory.getListPostSerive().execute({
+            page,
+            limit
+        });
 
         return {
             body: posts

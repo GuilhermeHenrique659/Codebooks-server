@@ -12,6 +12,8 @@ export class User {
 
     public posts: Post[];
 
+    public avatar?: string;
+
     constructor(props: Omit<User, 'id' | keyof User>, id?: string) {
         Object.assign(this, props);
         if (!id)

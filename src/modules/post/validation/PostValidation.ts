@@ -12,4 +12,12 @@ export class PostValidation extends AbstractValidation {
 
         return Schema.validate(request.body);
     }
+
+    public listPostValidate(request: Request) {
+        const Schema = Joi.object({
+            page: Joi.number(),
+            limit: Joi.number(),
+        })
+        return Schema.validate(request.query)
+    }
 }
