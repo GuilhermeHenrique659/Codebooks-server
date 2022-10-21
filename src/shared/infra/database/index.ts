@@ -6,12 +6,12 @@ import { CreatePost1666009543896 } from './migrations/1666009543896-CreatePost'
 import { AddUserInPost1666009768966 } from './migrations/1666009768966-AddUserInPost'
 
 export const connection = new DataSource({
-    type: "mysql",
-    host: "127.0.0.1",
-    port: 3307,
-    username: "root",
-    password: "",
-    database: "db",
+    type: "postgres",
+    host: "localhost",
+    port: 5432,
+    username: "postgres",
+    password: "docker",
+    database: "codebooks",
     synchronize: true,
     logging: false,
     migrations: [

@@ -1,10 +1,11 @@
 import { Repository } from "typeorm";
+import { IRepositoryAdapter } from "../../../../shared/adapter/IRepositoryAdapter";
 import { Post } from "../entities/Post";
 import { IPostPaginate, IPostRepository, SeachParams } from "./IPostRepostirory";
 
 
 export class PostRepository implements IPostRepository {
-    constructor(private _dataSource: Repository<Post>) { }
+    constructor(private _dataSource: IRepositoryAdapter<Post>) { }
 
     public async save(post: Post): Promise<Post> {
         return this._dataSource.save(post);

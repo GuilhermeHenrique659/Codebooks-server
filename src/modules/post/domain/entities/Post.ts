@@ -1,8 +1,9 @@
 import { User } from "../../../user/domain/entities/User";
 import { v4 as uuidv4 } from 'uuid';
+import { IEntity } from "../../../../shared/adapter/IEntity";
 
 
-export class Post {
+export class Post implements IEntity {
     public readonly id: string;
 
     public title: string;
