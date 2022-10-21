@@ -19,4 +19,12 @@ export class User {
         if (!id)
             this.id = uuidv4();
     }
+
+    public setName(name?: string): void{
+        if(name) this.name = name
+    }
+
+    public setEmail(email?: string): void {
+        if(email) this.email = email
+    }
 }

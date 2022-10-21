@@ -14,7 +14,7 @@ export class CreateUserSessionService implements IService {
     public async execute(data: ICreateUserSessionServiceDTO) {
         const userExits = await this._userRepository.findByEmail(data.email);
 
-        if (!userExits) throw new AppError('Email incorrect. User not Found');
+        if (!userExits) throw new AppError('Email not Found');
 
         if (!(await this._hashProvider.compareHash(data.password, userExits.password)))
             throw new AppError('Password Incorrect!');

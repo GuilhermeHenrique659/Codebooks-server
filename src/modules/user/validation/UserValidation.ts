@@ -22,4 +22,15 @@ export class UserValidation extends AbstractValidation {
 
         return Schema.validate(request.body, { abortEarly: false })
     }
+
+    public validateUpdateUser(request: Request) {
+        const Schema = Joi.object({
+            name: Joi.string(),
+            email: Joi.string().email(),
+            password: Joi.string(),
+            passwordToConfirm: Joi.string().required(),
+        });
+
+        return Schema.validate(request.body, { abortEarly: false });
+    }
 }

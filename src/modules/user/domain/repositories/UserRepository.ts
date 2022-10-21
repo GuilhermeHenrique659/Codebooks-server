@@ -18,12 +18,14 @@ export class UserRepository implements IUserRepository {
             },
         });
     }
-
+    
     public async findById(id: string): Promise<User | null> {
-        return this._dataSource.findOne({
+        const user = await this._dataSource.findOne({
             where: {
                 id: id,
             },
         });
+        if(user) return new User(user, user.id);
+        return user
     }
 }

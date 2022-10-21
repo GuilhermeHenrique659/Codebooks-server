@@ -23,9 +23,16 @@ class UserRoutes extends AbstractRoute<UserController, UserValidation> {
             },
             {
                 method: HttpMethod.PATCH,
-                url: '/',
+                url: '/avatar',
                 controller: 'updateUserAvatarHandle',
                 authentication: true,
+            },
+            {
+                method: HttpMethod.PUT,
+                url: '/',
+                controller: 'UpdateUserHandle',
+                authentication: true,
+                validation: 'validateUpdateUser'
             }
         ]
     }

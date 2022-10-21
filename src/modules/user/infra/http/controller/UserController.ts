@@ -1,7 +1,9 @@
 import { IHttpRequest, IHttpResponse } from "../../../../../shared/adapter/HttpAdabter";
 import { AbstractController } from "../../../../../shared/controller/AbstractController";
 import AppError from "../../../../../shared/errors/AppError";
-import { LocalFilesProvider } from "../../../../../shared/providers/LocalFilesProviders";
+import { ICreateUserServiceDTO } from "../../../domain/services/createUserServices/CreateUserServiceDTO";
+import { ICreateUserSessionServiceDTO } from "../../../domain/services/createUserSessionService/CreateUserSessionServiceDTO";
+import { IUpdateUserServiceDTO } from "../../../domain/services/updateUserService/UpdateUserServiceDTO";
 import { UserServiceFactory } from "../../../domain/services/UserServiceFactory";
 export class UserController extends AbstractController {
     constructor(private usersService: UserServiceFactory) {
@@ -24,27 +26,27 @@ export class UserController extends AbstractController {
         }
     }
 
-    public async createUserHandle(request: IHttpRequest): Promise<IHttpResponse> {
-        const { email, name, password } = request.body;
+    public async UpdateUserHandle(request: IHttpRequest<Omit<IUpdateUserServiceDTO, 'id'>>): Promise<IHttpResponse> {
+        const { id } = request.user
 
-        const user = await this.usersService.getCreateUser().execute({
-            name: name,
-            email: email,
-            password: password
-        });
+
+        const user = await this.usersService.getUpdateUser().execute({id, ...request.body})
+        
+        return {
+            body: user
+        };
+    }
+
+    public async createUserHandle(request: IHttpRequest<ICreateUserServiceDTO>): Promise<IHttpResponse> {
+        const user = await this.usersService.getCreateUser().execute(request.body);
 
         return {
             body: user
         };
     }
 
-    public async createUserSessionHandle(resquest: IHttpRequest): Promise<IHttpResponse> {
-        const { email, password } = resquest.body;
-
-        const token = await this.usersService.getCreateSession().execute({
-            email: email,
-            password: password
-        })
+    public async createUserSessionHandle(resquest: IHttpRequest<ICreateUserSessionServiceDTO>): Promise<IHttpResponse> {
+        const token = await this.usersService.getCreateSession().execute(resquest.body)
 
         return {
             body: token

@@ -23,12 +23,12 @@ export const PostEntitySchema = new EntitySchema<Post>({
         },
         created_at: {
             name: 'created_at',
-            type: 'timestamp with time zone',
+            type: 'timestamp',
             createDate: true,
         },
         updated_at: {
             name: 'updated_at',
-            type: 'time with time zone',
+            type: 'timestamp',
             updateDate: true,
         }
     },

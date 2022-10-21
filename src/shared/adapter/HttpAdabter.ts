@@ -5,10 +5,10 @@ export interface IHttpResponse {
     body: any;
 }
 
-export interface IHttpRequest {
-    body?: any;
-    params?: any;
-    query?: any;
+export interface IHttpRequest<B = any | undefined, P = any | undefined, Q = any | undefined> {
+    body?: any | B;
+    params?: any | P;
+    query?: any | Q;
     user: {
         id?: string
     };
