@@ -3,18 +3,18 @@ import { IEntity } from "./IEntity";
 import { IRepositoryAdapter } from "./IRepositoryAdapter";
 
 export abstract class AbstractRepositoryAdapter implements IRepositoryAdapter<IEntity> {
-    constructor(private _typeormRepository: Repository<IEntity>, private T: new (props: any, id?: string) => IEntity) { }
+    constructor(private _typeormRepository: Repository<IEntity>, private Entity: new (props: any, id?: string) => IEntity) { }
 
     public async findOne(option?: any): Promise<IEntity | null> {
         const dataBaseEntity = await this._typeormRepository.findOne(option);
-        if (dataBaseEntity) return new this.T(dataBaseEntity, dataBaseEntity.id)
+        if (dataBaseEntity) return new this.Entity(dataBaseEntity, dataBaseEntity.id)
         return null
     }
 
     public async find(option?: any): Promise<IEntity[]> {
         const dataBaseEntites = await this._typeormRepository.find(option);
         return dataBaseEntites.flatMap((entity) => {
-            return new this.T(entity, entity.id);
+            return new this.Entity(entity, entity.id);
         })
     }
 
