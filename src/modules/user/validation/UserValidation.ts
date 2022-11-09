@@ -29,7 +29,7 @@ export class UserValidation extends AbstractValidation {
             email: Joi.string().email(),
             password: Joi.string(),
             passwordToConfirm: Joi.string().required(),
-        });
+        }).or('name', 'email', 'password');
 
         return Schema.validate(request.body, { abortEarly: false });
     }

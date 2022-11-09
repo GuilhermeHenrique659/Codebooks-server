@@ -1,18 +1,21 @@
 import { Repository } from "typeorm";
 import { IRepositoryAdapter } from "../../../../shared/adapter/IRepositoryAdapter";
+import { Like } from "../entities/Like";
 import { Post } from "../entities/Post";
 import { IPostPaginate, IPostRepository, SeachParams } from "./IPostRepostirory";
 
 
 export class PostRepository implements IPostRepository {
-    constructor(private _dataSource: IRepositoryAdapter<Post>) { }
+    constructor(private _postDataSource: IRepositoryAdapter<Post>,
+        private _likeDataSource: Repository<Like>) { }
 
     public async save(post: Post): Promise<Post> {
-        return this._dataSource.save(post);
+        return this._postDataSource.save(post);
     }
 
-    public async findAll({ page, skip, take }: SeachParams): Promise<IPostPaginate> {
-        const posts = await this._dataSource.find({
+    public async findAll({ page, skip, take, userId }: SeachParams): Promise<IPostPaginate> {
+        const posts = await this._postDataSource.find({
+            ...(userId && { where: { user_id: userId } }),
             relations: {
                 user: true
             },
@@ -22,7 +25,7 @@ export class PostRepository implements IPostRepository {
                 created_at: 'DESC'
             }
         });
-        const count = await this._dataSource.count();
+        const count = await this._postDataSource.count();
 
         return {
             per_page: take,
@@ -30,12 +33,14 @@ export class PostRepository implements IPostRepository {
             current_page: page,
             data: posts
         }
+    }
 
-
+    public async addLike(like: Like): Promise<void> {
+        await this._likeDataSource.insert(like)
     }
 
     public async findById(id: string): Promise<Post | null> {
-        return this._dataSource.findOne({
+        return this._postDataSource.findOne({
             where: {
                 id: id
             }

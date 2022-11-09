@@ -22,6 +22,12 @@ class PostRoute extends AbstractRoute<PostController, PostValidation> {
                 controller: 'ListPostHandle',
                 validation: 'listPostValidate',
                 authentication: true
+            },
+            {
+                method: HttpMethod.PATCH,
+                url: '/addLike',
+                controller: 'addLikeHandle',
+                authentication: true
             }
         ]
     }

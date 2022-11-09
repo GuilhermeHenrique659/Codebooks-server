@@ -6,13 +6,14 @@ import { IListPostServiceDTO } from "./ListPostServiceDTO";
 export class ListPostService {
     constructor(private _postRepository: IPostRepository) { }
 
-    public async execute({ page, limit }: IListPostServiceDTO): Promise<IPostPaginate> {
+    public async execute({ page, limit, userId }: IListPostServiceDTO): Promise<IPostPaginate> {
         const take = limit
         const skip = (Number(page) - 1) * take;
         return this._postRepository.findAll({
             page,
             skip,
-            take
+            take,
+            userId
         });
     }
 }

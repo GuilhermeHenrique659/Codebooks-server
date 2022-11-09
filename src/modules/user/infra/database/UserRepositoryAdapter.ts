@@ -3,7 +3,7 @@ import { AbstractRepositoryAdapter } from "../../../../shared/adapter/AbstractRe
 import { User } from "../../domain/entities/User";
 
 export class UserRepositoryAdapter extends AbstractRepositoryAdapter {
-    constructor(private _userOrmRepository: Repository<User>) {
-        super(_userOrmRepository, User);
+    constructor(userOrmRepository: Repository<User>) {
+        super(userOrmRepository, User);
     }
 }

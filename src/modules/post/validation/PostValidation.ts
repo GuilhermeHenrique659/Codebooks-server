@@ -17,6 +17,7 @@ export class PostValidation extends AbstractValidation {
         const Schema = Joi.object({
             page: Joi.number(),
             limit: Joi.number(),
+            userId: Joi.string(),
         })
         return Schema.validate(request.query)
     }

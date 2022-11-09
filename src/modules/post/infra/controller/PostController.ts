@@ -22,14 +22,29 @@ export class PostController extends AbstractController {
         };
     }
 
+    public async addLikeHandle(request: IHttpRequest): Promise<IHttpResponse> {
+        const { postId } = request.query;
+        const { id } = request.user;
+
+        await this._postServiceFactory.getAddLikeService().execute(id as string, postId);
+
+        return {
+            body: {
+                likeIsAdd: true
+            }
+        }
+    }
+
     public async ListPostHandle(request: IHttpRequest): Promise<IHttpResponse> {
         const page = request.query.page ? Number(request.query.page) : 1;
         const limit = request.query.limit ? Number(request.query.limit) : 3;
+        const userId = request.query.userId
 
 
         const posts = await this._postServiceFactory.getListPostSerive().execute({
             page,
-            limit
+            limit,
+            userId
         });
 
         return {

@@ -3,7 +3,7 @@ import { AbstractRepositoryAdapter } from "../../../../shared/adapter/AbstractRe
 import { Post } from "../../domain/entities/Post";
 
 export class PostRepositoryAdapter extends AbstractRepositoryAdapter {
-    constructor(private _postOrmRepository: Repository<Post>) {
-        super(_postOrmRepository, Post);
+    constructor(postOrmRepository: Repository<Post>) {
+        super(postOrmRepository, Post);
     }
 }
