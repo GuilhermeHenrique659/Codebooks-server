@@ -1,5 +1,7 @@
 import { IHttpRequest, IHttpResponse } from "../../../../shared/adapter/HttpAdabter";
 import { AbstractController } from "../../../../shared/controller/AbstractController";
+import { AddLikeNotificationObserver } from "../../../notification/domain/observer/AddLikeNotificationObserver";
+import { NotificationObserver } from "../../../notification/domain/observer/NotificationSubject";
 import { PostServiceFactory } from "../../domain/services/PostServiceFactory";
 
 export class PostController extends AbstractController {
@@ -26,8 +28,12 @@ export class PostController extends AbstractController {
         const { postId } = request.query;
         const { id } = request.user;
 
+        const event = new NotificationObserver();
+        event.add(new AddLikeNotificationObserver());
+
         await this._postServiceFactory.getAddLikeService().execute(id as string, postId);
 
+        event.notify(postId)
         return {
             body: {
                 likeIsAdd: true
