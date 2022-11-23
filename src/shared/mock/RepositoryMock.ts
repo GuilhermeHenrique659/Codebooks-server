@@ -10,8 +10,6 @@ interface Ioption {
 export class MockRepository<T> implements IRepositoryAdapter<T>{
     public db: T[] = [];
 
-    constructor() { }
-
     public async findOne(option: Ioption): Promise<T | null> {
         const where = Object.keys(option.where)
         const property = Object.values(option.where)
