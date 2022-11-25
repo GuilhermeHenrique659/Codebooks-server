@@ -44,7 +44,7 @@ export abstract class AbstractRoute<
                 routeMethod.url,
                 AuthenticateMiddleware.isAutheticated(routeMethod.authentication),
                 this.validationMiddleware.executeValidate(routeMethod.validation),
-                ExpressAdapter.RouterAdapter(this.controller, routeMethod.controller)
+                ExpressAdapter.RouterAdapter(this.controller, routeMethod.controller, routeMethod.responseCode)
             );
         })
     }

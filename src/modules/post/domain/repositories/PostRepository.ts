@@ -7,7 +7,7 @@ import { IPostPaginate, IPostRepository, SeachParams } from "./IPostRepostirory"
 
 export class PostRepository implements IPostRepository {
     constructor(private _postDataSource: IRepositoryAdapter<Post>,
-        private _likeDataSource: Repository<Like>) { }
+        private _likeDataSource: IRepositoryAdapter<Like>) { }
 
     public async save(post: Post): Promise<Post> {
         return this._postDataSource.save(post);

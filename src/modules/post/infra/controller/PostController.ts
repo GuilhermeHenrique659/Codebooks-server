@@ -1,15 +1,17 @@
-import { IHttpRequest, IHttpResponse } from "../../../../shared/adapter/HttpAdabter";
+import { ControllerInput, ControllerOutput } from "../../../../shared/adapter/HttpAdabter";
 import { AbstractController } from "../../../../shared/controller/AbstractController";
 import { AddLikeNotificationObserver } from "../../../notification/domain/observer/AddLikeNotificationObserver";
 import { NotificationObserver } from "../../../notification/domain/observer/NotificationSubject";
+import { ICreateUserServiceDTO } from "../../../user/domain/services/createUserServices/CreateUserServiceDTO";
 import { PostServiceFactory } from "../../domain/services/PostServiceFactory";
+import { PostPresentation } from "../presentation/PostPresentation";
 
 export class PostController extends AbstractController {
     constructor(private _postServiceFactory: PostServiceFactory) {
         super()
     }
-    public async createPostHandle(request: IHttpRequest): Promise<IHttpResponse> {
-        const { title, description } = request.body;
+    public async createPostHandle(request: ControllerInput<Omit<ICreateUserServiceDTO, 'user_id'>>): Promise<ControllerOutput> {
+        const { title, description } = request.data;
         const { id } = request.user;
 
         const post = await this._postServiceFactory.getCreatePostService().execute({
@@ -20,12 +22,12 @@ export class PostController extends AbstractController {
         });
 
         return {
-            body: post
+            data: post
         };
     }
 
-    public async addLikeHandle(request: IHttpRequest): Promise<IHttpResponse> {
-        const { postId } = request.query;
+    public async addLikeHandle(request: ControllerInput): Promise<ControllerOutput> {
+        const { postId } = request.data;
         const { id } = request.user;
 
         const event = new NotificationObserver();
@@ -35,16 +37,16 @@ export class PostController extends AbstractController {
 
         event.notify(postId)
         return {
-            body: {
+            data: {
                 likeIsAdd: true
             }
         }
     }
 
-    public async ListPostHandle(request: IHttpRequest): Promise<IHttpResponse> {
-        const page = request.query.page ? Number(request.query.page) : 1;
-        const limit = request.query.limit ? Number(request.query.limit) : 3;
-        const userId = request.query.userId
+    public async ListPostHandle(request: ControllerInput): Promise<ControllerOutput> {
+        const page = request.data.page ? Number(request.data.page) : 1;
+        const limit = request.data.limit ? Number(request.data.limit) : 3;
+        const userId = request.data.userId
 
 
         const posts = await this._postServiceFactory.getListPostSerive().execute({
@@ -53,9 +55,7 @@ export class PostController extends AbstractController {
             userId
         });
 
-        return {
-            body: posts
-        }
+        return PostPresentation.getPostList(posts);
     }
 
 }

@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { AbstractController } from "../controller/AbstractController";
+import { SuccessResponse } from "../infra/routes/IRoutesMethod";
 import { File } from "../types/Files";
-import { IHttpRequest } from "./HttpAdabter";
+import { ControllerInput } from "./HttpAdabter";
 
 
 export class ExpressAdapter {
@@ -24,17 +25,15 @@ export class ExpressAdapter {
         }
     }
 
-    static RouterAdapter<C extends AbstractController>(controller: C, method: keyof C) {
+    static RouterAdapter<C extends AbstractController>(controller: C, method: keyof C, statusResponse = SuccessResponse.SUCCESS_RESPONSE) {
         return async (request: Request, response: Response) => {
-            const httpRequest: IHttpRequest = {
-                body: request.body,
-                query: request.query,
-                params: request.params,
+            const controllerInput: ControllerInput = {
+                data: { ...request.body, ...request.params, ...request.query },
                 user: request.user,
                 files: this.FileAdapter(request)
             };
-            const httpResponse = await controller.exeMethod(method, httpRequest);
-            return response.status(200).json(httpResponse.body);
+            const controllerOutput = await controller.exeMethod(method, controllerInput);
+            return response.status(statusResponse).json(controllerOutput.data);
         }
     }
 }

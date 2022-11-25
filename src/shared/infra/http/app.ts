@@ -2,20 +2,20 @@ import 'reflect-metadata'
 import express, { NextFunction, Request, Response, Express, Router } from "express";
 import fileupload from 'express-fileupload'
 import "express-async-errors";
-import { DataSource } from 'typeorm';
 import AppError from '../../errors/AppError';
 import { IRoute } from '../routes/IRoute';
 import { AbstractController } from '../../controller/AbstractController';
 import cors from 'cors'
 import uploadConfig from './../../../config/upload';
+import { DataBase } from '../database';
 
 export class App {
 
     private app: Express;
     private routes: IRoute<AbstractController>[];
-    private db: DataSource;
+    private db: DataBase;
 
-    constructor(app: Express, db: DataSource, routes: IRoute<AbstractController>[]) {
+    constructor(app: Express, db: DataBase, routes: IRoute<AbstractController>[]) {
         this.app = app;
         this.db = db
         this.routes = routes
@@ -40,7 +40,6 @@ export class App {
 
         this.app.use("/files", express.static(uploadConfig.directory))
 
-        // Then pass these options to cors:
         this.app.use(cors(options));
 
         this.app.use(express.json());
@@ -64,8 +63,8 @@ export class App {
     }
 
     public startApp() {
-        this.runApp();
         this.connectDb();
+        this.runApp();
     }
 
     public runApp() {
@@ -75,10 +74,6 @@ export class App {
         })
     }
     public connectDb() {
-        this.db.initialize().then(() => {
-            console.log("Database connection complete");
-        }).catch((error) => {
-            console.error("Database connection failed: " + error)
-        });
+        this.db.startDbConnectiom()
     }
 }

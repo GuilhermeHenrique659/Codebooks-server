@@ -1,9 +1,9 @@
-import { DataSource, EntitySchema, ObjectLiteral } from 'typeorm'
+import { DataSource, EntitySchema, ObjectLiteral, Repository } from 'typeorm'
 import { LikeEntitySchema } from '../../../modules/post/infra/database/entities/LikeSchema'
 import { PostEntitySchema } from '../../../modules/post/infra/database/entities/PostSchema'
-import { User } from '../../../modules/user/domain/entities/User'
 import { userEntitySchema } from '../../../modules/user/infra/database/entities/UserSchema'
-import { IEntity } from '../../adapter/IEntity'
+import { AbstractRepositoryAdapter } from '../../adapter/AbstractRepositoryAdapter'
+import { IRepositoryAdapter } from '../../adapter/IRepositoryAdapter'
 import { MockRepository } from '../../mock/RepositoryMock'
 import { CreateUser1665668135024 } from './migrations/1665668135024-CreateUser'
 import { CreatePost1666009543896 } from './migrations/1666009543896-CreatePost'
@@ -11,49 +11,51 @@ import { AddUserInPost1666009768966 } from './migrations/1666009768966-AddUserIn
 import { CreateLike1667828962841 } from './migrations/1667828962841-CreateLike'
 
 
-class DataBase {
-    private dbOn: boolean = false;
-    private connection: DataSource;
+export class DataBase {
+    private connection = new DataSource({
+        type: "postgres",
+        host: "localhost",
+        port: 5432,
+        username: "postgres",
+        database: "codebooks",
+        password: 'docker',
+        synchronize: true,
+        logging: false,
+        migrations: [
+            CreateUser1665668135024,
+            CreatePost1666009543896,
+            CreateLike1667828962841,
+            AddUserInPost1666009768966
+        ],
+        entities: [
+            userEntitySchema,
+            PostEntitySchema,
+            LikeEntitySchema,
+        ]
+    });
 
-    public startDbConnectiom(){
-        this.connection = new DataSource({
-            type: "mysql",
-            host: "127.0.0.1",
-            port: 3307,
-            username: "root",
-            database: "db",
-            synchronize: true,
-            logging: false,
-            migrations: [
-                CreateUser1665668135024,
-                CreatePost1666009543896,
-                CreateLike1667828962841,
-                AddUserInPost1666009768966
-            ],
-            entities: [
-                userEntitySchema,
-                PostEntitySchema,
-                LikeEntitySchema,
-            ]
-        });
+    public startDbConnectiom() {
         this.connection.initialize().then(() => {
             console.log("Database connection complete");
-            this.dbOn = true
         }).catch((error) => {
             console.error("Database connection failed: " + error)
-            this.dbOn = false
         });
     }
 
-    public getDatasource<T extends ObjectLiteral>(Entity: EntitySchema<T>) {
-        if(this.dbOn){
-            return this.connection.getRepository<T>(Entity);
-        }else {
+    public getDataSource<T extends ObjectLiteral>(Entity: EntitySchema<T>,
+        repositoryAdapter?: new (repository: Repository<T>) => AbstractRepositoryAdapter,
+        useMock = false): IRepositoryAdapter<T> {
+        if (!useMock) {
+            if (repositoryAdapter) return new repositoryAdapter(this.connection.getRepository<T>(Entity)) as unknown as IRepositoryAdapter<T>;
+            return this.connection.getRepository<T>(Entity) as unknown as IRepositoryAdapter<T>;
+        } else {
             return new MockRepository<T>();
         }
     }
 
 
 }
-const data = new DataBase()
-const us = data.getDatasource<User>(userEntitySchema)
+
+
+const db = new DataBase();
+export default db;

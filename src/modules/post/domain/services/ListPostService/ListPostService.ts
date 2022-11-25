@@ -1,4 +1,3 @@
-import { Post } from "../../entities/Post";
 import { IPostPaginate, IPostRepository } from "../../repositories/IPostRepostirory";
 import { IListPostServiceDTO } from "./ListPostServiceDTO";
 

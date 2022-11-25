@@ -6,13 +6,17 @@ export enum HttpMethod {
     PUT = 'put'
 }
 
+export enum SuccessResponse {
+    SUCCESS_RESPONSE = 200,
+}
 
 
 interface IRouteConfig<C, V = undefined> {
     method: HttpMethod;
     controller: keyof C;
     validation?: keyof V;
-    authentication?: boolean
+    authentication?: boolean;
+    responseCode?: SuccessResponse
     url: string;
 }
 

@@ -1,14 +1,11 @@
 import { File } from "../types/Files";
 
-export interface IHttpResponse {
-    statusCode?: number | 200;
-    body: any;
+export interface ControllerOutput {
+    data: any;
 }
 
-export interface IHttpRequest<B = any | undefined, P = any | undefined, Q = any | undefined> {
-    body?: any | B;
-    params?: any | P;
-    query?: any | Q;
+export interface ControllerInput<D = any | undefined> {
+    data?: any | D
     user: {
         id?: string
     };
