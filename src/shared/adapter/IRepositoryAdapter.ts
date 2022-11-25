@@ -1,9 +1,9 @@
 export interface IRepositoryAdapter<T> {
-    save(entities: T, option?: any): Promise<T>;
-    insert(entities: T, option?: any): Promise<T>;
+    save(entity: T, option?: any): Promise<T>;
+    insert(entity: T): Promise<T>;
     find(option?: any | undefined): Promise<T[]>;
     findOne(option?: any | undefined): Promise<T | null>;
-    remove(entities: T, option?: any | undefined): Promise<void>
+    remove(entity: T, option?: any | undefined): Promise<void>
     count(): Promise<number>
 }
 

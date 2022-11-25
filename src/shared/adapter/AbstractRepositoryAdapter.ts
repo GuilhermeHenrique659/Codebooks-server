@@ -23,8 +23,13 @@ export abstract class AbstractRepositoryAdapter implements IRepositoryAdapter<IE
         return entity;
     }
 
-    public async remove(entities: IEntity, option?: any): Promise<void> {
-        await this._typeormRepository.remove(entities, option);
+    public async insert(entity: IEntity): Promise<IEntity> {
+        await this._typeormRepository.insert(entity);
+        return entity
+    }
+
+    public async remove(entity: IEntity, option?: any): Promise<void> {
+        await this._typeormRepository.remove(entity, option);
     }
 
     public async count(): Promise<number> {

@@ -63,6 +63,11 @@ export class MockRepository<T> implements IRepositoryAdapter<T>{
         return entities
     }
 
+    public async insert(entity: T): Promise<T> {
+        this.db.push(entity);
+        return entity
+    }
+
     public async remove(entities: T, option?: any): Promise<void> {
         const findIndex = this.db.findIndex(entity => entity === entities);
 
