@@ -5,28 +5,30 @@ import { NotificationObserver } from "../../../notification/domain/observer/Noti
 import { ICreateUserServiceDTO } from "../../../user/domain/services/createUserServices/CreateUserServiceDTO";
 import { PostServiceFactory } from "../../domain/services/PostServiceFactory";
 import { PostPresentation } from "../presentation/PostPresentation";
+import { IPostListOutput } from "./controllerOutput/IPostListOutput";
+import { PostOutput } from "./controllerOutput/PostOutput";
 
 export class PostController extends AbstractController {
     constructor(private _postServiceFactory: PostServiceFactory) {
         super()
     }
-    public async createPostHandle(request: ControllerInput<Omit<ICreateUserServiceDTO, 'user_id'>>): Promise<ControllerOutput> {
+    public async createPostHandle(request: ControllerInput<Omit<ICreateUserServiceDTO, 'user_id'>>): Promise<ControllerOutput<PostOutput>> {
         const { title, description } = request.data;
         const { id } = request.user;
 
         const post = await this._postServiceFactory.getCreatePostService().execute({
-            title: title,
-            description: description,
+            title,
+            description,
             like: 0,
             user_id: id as string
         });
 
         return {
-            data: post
+            data: PostPresentation.getPost(post)
         };
     }
 
-    public async addLikeHandle(request: ControllerInput): Promise<ControllerOutput> {
+    public async addLikeHandle(request: ControllerInput): Promise<ControllerOutput<{ likeIsAdd: boolean }>> {
         const { postId } = request.data;
         const { id } = request.user;
 
@@ -43,7 +45,7 @@ export class PostController extends AbstractController {
         }
     }
 
-    public async ListPostHandle(request: ControllerInput): Promise<ControllerOutput> {
+    public async ListPostHandle(request: ControllerInput): Promise<ControllerOutput<IPostListOutput>> {
         const page = request.data.page ? Number(request.data.page) : 1;
         const limit = request.data.limit ? Number(request.data.limit) : 3;
         const userId = request.data.userId
@@ -55,7 +57,9 @@ export class PostController extends AbstractController {
             userId
         });
 
-        return PostPresentation.getPostList(posts);
+        return {
+            data: PostPresentation.getPostList(posts)
+        }
     }
 
 }

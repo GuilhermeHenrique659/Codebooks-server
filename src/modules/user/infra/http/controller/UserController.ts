@@ -5,13 +5,15 @@ import { ICreateUserServiceDTO } from "../../../domain/services/createUserServic
 import { ICreateUserSessionServiceDTO } from "../../../domain/services/createUserSessionService/CreateUserSessionServiceDTO";
 import { IUpdateUserServiceDTO } from "../../../domain/services/updateUserService/UpdateUserServiceDTO";
 import { UserServiceFactory } from "../../../domain/services/UserServiceFactory";
+import { ICreateSessionResponse } from "./controllerOutput/ICreateSessionOutput";
 import { UserPresentation } from "../presentation/UserPresentation";
+import { IGetUserOutput } from "./controllerOutput/IGetUserOutput";
 export class UserController extends AbstractController {
     constructor(private usersService: UserServiceFactory) {
         super();
     }
 
-    public async updateUserAvatarHandle(request: ControllerInput): Promise<ControllerOutput> {
+    public async updateUserAvatarHandle(request: ControllerInput): Promise<ControllerOutput<IGetUserOutput>> {
         const { files } = request;
         const { id } = request.user;
 
@@ -27,7 +29,7 @@ export class UserController extends AbstractController {
         }
     }
 
-    public async UpdateUserHandle(request: ControllerInput<Omit<IUpdateUserServiceDTO, 'id'>>): Promise<ControllerOutput> {
+    public async UpdateUserHandle(request: ControllerInput<Omit<IUpdateUserServiceDTO, 'id'>>): Promise<ControllerOutput<IGetUserOutput>> {
         const { id } = request.user
 
 
@@ -38,7 +40,7 @@ export class UserController extends AbstractController {
         }
     }
 
-    public async createUserHandle(request: ControllerInput<ICreateUserServiceDTO>): Promise<ControllerOutput> {
+    public async createUserHandle(request: ControllerInput<ICreateUserServiceDTO>): Promise<ControllerOutput<IGetUserOutput>> {
         const user = await this.usersService.getCreateUser().execute(request.data);
 
         return {
@@ -46,7 +48,7 @@ export class UserController extends AbstractController {
         }
     }
 
-    public async createUserSessionHandle(resquest: ControllerInput<ICreateUserSessionServiceDTO>): Promise<ControllerOutput> {
+    public async createUserSessionHandle(resquest: ControllerInput<ICreateUserSessionServiceDTO>): Promise<ControllerOutput<ICreateSessionResponse>> {
         const token = await this.usersService.getCreateSession().execute(resquest.data)
 
         return {

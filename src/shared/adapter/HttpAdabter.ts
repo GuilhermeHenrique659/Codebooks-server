@@ -1,7 +1,7 @@
 import { File } from "../types/Files";
 
-export interface ControllerOutput {
-    data: any;
+export interface ControllerOutput<T = undefined> {
+    data: T;
 }
 
 export interface ControllerInput<D = any | undefined> {

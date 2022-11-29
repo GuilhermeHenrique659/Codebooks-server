@@ -1,3 +1,4 @@
+import { Post } from '../../domain/entities/Post';
 import { IPostPaginate } from '../../domain/repositories/IPostRepostirory';
 
 export class PostPresentation {
@@ -8,12 +9,23 @@ export class PostPresentation {
                 return {
                     ...post,
                     user: {
-                        user_id: post.user.id,
+                        id: post.user.id,
                         name: post.user.name,
                         avatar: post.user.avatar
                     }
                 }
             })
+        }
+    }
+
+    static getPost(post: Post) {
+        return {
+            ...post,
+            user: {
+                id: post.user.id,
+                name: post.user.name,
+                avatar: post.user.avatar,
+            }
         }
     }
 }
