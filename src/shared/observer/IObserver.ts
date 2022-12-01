@@ -1,3 +1,3 @@
 export interface IObserver {
-    update(data?: any): void
+    update(data?: any): Promise<void>
 }

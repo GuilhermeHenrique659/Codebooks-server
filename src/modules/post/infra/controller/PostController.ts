@@ -37,7 +37,7 @@ export class PostController extends AbstractController {
 
         await this._postServiceFactory.getAddLikeService().execute(id as string, postId);
 
-        event.notify(postId)
+        await event.notify(postId)
         return {
             data: {
                 likeIsAdd: true

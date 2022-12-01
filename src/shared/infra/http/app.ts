@@ -8,12 +8,18 @@ import { AbstractController } from '../../controller/AbstractController';
 import cors from 'cors'
 import uploadConfig from './../../../config/upload';
 import { DataBase } from '../database';
-
+import http from 'http';
+import socketio, { Server, Socket } from 'socket.io';
+import { AuthenticateMiddleware } from '../../middleware/AuthenticationMiddleware';
+import { Listeners } from '../../listeners/Listerners';
 export class App {
 
     private app: Express;
     private routes: IRoute<AbstractController>[];
     private db: DataBase;
+    private httpServer: http.Server
+    private io: Server;
+    private listener: Listeners;
 
     constructor(app: Express, db: DataBase, routes: IRoute<AbstractController>[]) {
         this.app = app;
@@ -62,6 +68,25 @@ export class App {
         });
     }
 
+
+    public getListener() {
+        return this.listener
+    }
+
+    public setupSocket() {
+        this.io = new socketio.Server(this.httpServer);
+        this.listener = new Listeners(this.io);
+
+        this.io.on('connection', (socket: socketio.Socket) => {
+            console.log('client connected: ' + socket.id);
+            this.listener.addUserSocket(socket)
+        })
+        this.io.on('disconnect', (socket: socketio.Socket) => {
+            console.log('client desconnected: ' + socket.id);
+        })
+
+    }
+
     public startApp() {
         this.connectDb();
         this.runApp();
@@ -69,7 +94,9 @@ export class App {
 
     public runApp() {
         this.setupApp();
-        this.app.listen(3333, () => {
+        this.httpServer = http.createServer(this.app);
+        this.setupSocket()
+        this.httpServer.listen(3333, () => {
             console.log("Server start in host: http://localhost:3333/");
         })
     }

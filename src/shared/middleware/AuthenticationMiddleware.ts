@@ -16,6 +16,17 @@ export class AuthenticateMiddleware {
 
         const authHeader = request.headers.authorization;
 
+        const sub = this.AuthenticatedToken(authHeader);
+
+        request.user = {
+            id: sub,
+        }
+
+        return next();
+
+    }
+
+    static AuthenticatedToken(authHeader?: string) {
         if (!authHeader) {
             throw new AppError("token is missing.")
         }
@@ -27,11 +38,7 @@ export class AuthenticateMiddleware {
 
             const { sub } = decodedToken as ITokenPayload;
 
-            request.user = {
-                id: sub,
-            }
-
-            return next();
+            return sub;
         } catch {
             throw new AppError("Token JWT is not valid")
         }
