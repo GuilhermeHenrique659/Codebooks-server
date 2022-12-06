@@ -9,8 +9,7 @@ import cors from 'cors'
 import uploadConfig from './../../../config/upload';
 import { DataBase } from '../database';
 import http from 'http';
-import socketio, { Server, Socket } from 'socket.io';
-import { AuthenticateMiddleware } from '../../middleware/AuthenticationMiddleware';
+import socketio, { Server } from 'socket.io';
 import { Listeners } from '../../listeners/Listerners';
 export class App {
 
@@ -101,6 +100,10 @@ export class App {
         })
     }
     public connectDb() {
-        this.db.startDbConnectiom()
+        this.db.startDbConnection().then(() => {
+            console.log('connection success');
+        }).catch(() => {
+            console.log('connection failed');
+        });
     }
 }

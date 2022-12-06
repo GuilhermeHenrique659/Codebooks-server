@@ -1,12 +1,12 @@
 import { File } from "../types/Files";
 
-export interface ControllerOutput<T = undefined> {
+export interface ControllerOutput<T = any> {
     data: T;
 }
 
 export interface ControllerInput<D = any | undefined> {
-    data?: any | D
-    user: {
+    data: D
+    user?: {
         id?: string
     };
     files?: File[]

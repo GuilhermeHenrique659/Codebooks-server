@@ -15,7 +15,7 @@ export class UserController extends AbstractController {
 
     public async updateUserAvatarHandle(request: ControllerInput): Promise<ControllerOutput<IGetUserOutput>> {
         const { files } = request;
-        const { id } = request.user;
+        const id = request.user?.id;
 
         if (!files) throw new AppError('Avatar not allowed')
 
@@ -30,10 +30,10 @@ export class UserController extends AbstractController {
     }
 
     public async UpdateUserHandle(request: ControllerInput<Omit<IUpdateUserServiceDTO, 'id'>>): Promise<ControllerOutput<IGetUserOutput>> {
-        const { id } = request.user
+        const id = request.user?.id
 
 
-        const user = await this.usersService.getUpdateUser().execute({ id, ...request.data })
+        const user = await this.usersService.getUpdateUser().execute({ id: id as string, ...request.data })
 
         return {
             data: UserPresentation.getUserResponse(user)
