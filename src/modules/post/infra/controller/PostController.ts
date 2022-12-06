@@ -7,7 +7,6 @@ import { ICreatePostServiceDTO } from "../../domain/services/CreatePostService/C
 import { PostServiceFactory } from "../../domain/services/PostServiceFactory";
 import { PostPresentation } from "../presentation/PostPresentation";
 import { IPostListOutput } from "./controllerOutput/IPostListOutput";
-import { PostOutput } from "./controllerOutput/PostOutput";
 
 export class PostController extends AbstractController {
     constructor(private _postServiceFactory: PostServiceFactory) {
