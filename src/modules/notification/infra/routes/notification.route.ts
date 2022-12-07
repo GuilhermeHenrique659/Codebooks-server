@@ -2,7 +2,7 @@ import { AbstractRoute } from "../../../../shared/infra/routes/AbstractRoute";
 import { HttpMethod, IRouteMethod } from "../../../../shared/infra/routes/IRoutesMethod";
 import { NotificationController } from "../controller/NotificationController";
 import { NotificationControllerFactory } from "../controller/NotificationControllerFactory";
-import { NotificationValidation } from "../validation/NotificationValidation";
+import { NotificationValidation } from "../../validation/NotificationValidation";
 
 
 export class NotificationRoute extends AbstractRoute<NotificationController, NotificationValidation> {
