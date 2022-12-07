@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { AbstractController } from "../controller/AbstractController";
 import { SuccessResponse } from "../infra/routes/IRoutesMethod";
 import { File } from "../types/Files";
-import { ControllerInput } from "./HttpAdabter";
+import { ControllerInput } from "./ControllerBoundary";
 
 
 export class ExpressAdapter {

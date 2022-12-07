@@ -1,4 +1,4 @@
-import { ControllerInput, ControllerOutput } from "../../../../shared/adapter/HttpAdabter";
+import { ControllerInput, ControllerOutput } from "../../../../shared/adapter/ControllerBoundary";
 import { AbstractController } from "../../../../shared/controller/AbstractController";
 import { AddLikeNotificationObserver } from "../../../notification/infra/observer/AddLikeNotificationObserver";
 import { NotificationObserver } from "../../../notification/infra/observer/NotificationSubject";

@@ -1,4 +1,4 @@
-import { ControllerInput, ControllerOutput } from "../adapter/HttpAdabter";
+import { ControllerInput, ControllerOutput } from "../adapter/ControllerBoundary";
 import { IAbstractServiceFactory } from "../services/IAbstractServiceFactory";
 
 

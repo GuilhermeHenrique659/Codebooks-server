@@ -1,4 +1,4 @@
-import { ControllerInput, ControllerOutput } from "../../../../../shared/adapter/HttpAdabter";
+import { ControllerInput, ControllerOutput } from "../../../../../shared/adapter/ControllerBoundary";
 import { AbstractController } from "../../../../../shared/controller/AbstractController";
 import AppError from "../../../../../shared/errors/AppError";
 import { ICreateUserServiceDTO } from "../../../domain/services/createUserServices/CreateUserServiceDTO";

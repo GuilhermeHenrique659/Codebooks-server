@@ -1,6 +1,7 @@
 import { IPostRepository } from "../../../post/domain/repositories/IPostRepostirory";
 import { INotificationRepository } from "../repositories/INotificationRepository";
 import { CreatePostLikeNotificationService } from "./CreatePostLikeNotification/CreatePostLikeNotificationService";
+import { DeleteNofiticationService } from "./DeleteNotificationService/DeleteNotificationService";
 import { ListNotificationService } from "./ListNotificationService/ListNotificationService";
 
 export class NotificationServiceFactory {
@@ -13,5 +14,9 @@ export class NotificationServiceFactory {
 
     public getListNotificationService() {
         return new ListNotificationService(this.notificationRepository);
+    }
+
+    public getDeleteNotificationService() {
+        return new DeleteNofiticationService(this.notificationRepository);
     }
 }

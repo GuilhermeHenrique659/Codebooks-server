@@ -16,4 +16,16 @@ export class NotificationRepository implements INotificationRepository {
             }
         });
     }
+
+    public async findById(notificationId: string): Promise<Notification | null> {
+        return this._notificationDatasource.findOne({
+            where: {
+                id: notificationId
+            }
+        })
+    }
+
+    public async remove(notification: Notification): Promise<void> {
+        this._notificationDatasource.remove(notification);
+    }
 }
