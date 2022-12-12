@@ -1,6 +1,7 @@
 import { IObserver } from "../../../../shared/observer/IObserver";
+import { ISubject } from "../../../../shared/observer/ISubject";
 
-export class NotificationObserver {
+export class NotificationSubject implements ISubject {
     private observerList: Array<IObserver> = [];
 
     public add(observer: IObserver) {

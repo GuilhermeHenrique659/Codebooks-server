@@ -1,7 +1,7 @@
 import { ControllerInput, ControllerOutput } from "../../../../shared/adapter/ControllerBoundary";
 import { AbstractController } from "../../../../shared/controller/AbstractController";
+import { ISubject } from "../../../../shared/observer/ISubject";
 import { AddLikeNotificationObserver } from "../../../notification/infra/observer/AddLikeNotificationObserver";
-import { NotificationObserver } from "../../../notification/infra/observer/NotificationSubject";
 import { Post } from "../../domain/entities/Post";
 import { ICreatePostServiceDTO } from "../../domain/services/CreatePostService/CreatePostServiceDTO";
 import { PostServiceFactory } from "../../domain/services/PostServiceFactory";
@@ -9,7 +9,8 @@ import { PostPresentation } from "../presentation/PostPresentation";
 import { IPostListOutput } from "./controllerOutput/IPostListOutput";
 
 export class PostController extends AbstractController {
-    constructor(private _postServiceFactory: PostServiceFactory) {
+    constructor(private _postServiceFactory: PostServiceFactory,
+        private _notificationEvent: ISubject) {
         super()
     }
     public async createPostHandle(request: ControllerInput<Omit<ICreatePostServiceDTO, 'user_id' | 'like'>>): Promise<ControllerOutput<Post>> {
@@ -32,12 +33,11 @@ export class PostController extends AbstractController {
         const { postId } = request.data;
         const id = request.user?.id;
 
-        const event = new NotificationObserver();
-        event.add(new AddLikeNotificationObserver());
+        this._notificationEvent.add(new AddLikeNotificationObserver());
 
         await this._postServiceFactory.getAddLikeService().execute(id as string, postId);
 
-        await event.notify(postId)
+        await this._notificationEvent.notify(postId)
         return {
             data: {
                 likeIsAdd: true

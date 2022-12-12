@@ -1,3 +1,4 @@
+import { NotificationSubject } from "../../../notification/infra/observer/NotificationSubject";
 import { UserRepository } from "../../../user/domain/repositories/UserRepository";
 import { userDataSource } from "../../../user/infra/database/UserSchemaDataSource";
 import { PostRepository } from "../../domain/repositories/PostRepository";
@@ -10,5 +11,5 @@ export const PostControllerFactory = (): PostController => {
     const postRepository = new PostRepository(postDataSource, likeDataSource);
     const userRepository = new UserRepository(userDataSource);
     const postServiceFactory = new PostServiceFactory(postRepository, userRepository)
-    return new PostController(postServiceFactory);
+    return new PostController(postServiceFactory, new NotificationSubject());
 }
