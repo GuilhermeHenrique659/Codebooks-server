@@ -18,10 +18,10 @@ export class UpdateUserService {
             throw new AppError('Password Incorrect!');
 
         if (data.email) {
-            const EmailExists = await this._userRepository.findByEmail(data.email);
+            const emailExists = await this._userRepository.findByEmail(data.email);
 
-            if (EmailExists) {
-                if (EmailExists.email !== user.email) throw new AppError('Email already used');
+            if (emailExists) {
+                if (emailExists.email !== user.email) throw new AppError('Email already used');
             }
         }
 

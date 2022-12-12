@@ -8,6 +8,11 @@ export class NotificationSubject implements ISubject {
         this.observerList.push(observer);
     }
 
+    public remove(observer: IObserver): void {
+        const index = this.observerList.indexOf(observer);
+        this.observerList.slice(index, 1);
+    }
+
     public async notify(data: any) {
         for (const observer of this.observerList) {
             await observer.update(data)
