@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-export interface IRoute<T> {
+export interface IRoute {
     setRouter(router: Router): void;
     getPrefixRoute(): string;
     setupRoutes(): void;

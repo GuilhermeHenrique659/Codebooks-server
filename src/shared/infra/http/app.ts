@@ -4,7 +4,6 @@ import fileupload from 'express-fileupload'
 import "express-async-errors";
 import AppError from '../../errors/AppError';
 import { IRoute } from '../routes/IRoute';
-import { AbstractController } from '../../controller/AbstractController';
 import cors from 'cors'
 import uploadConfig from './../../../config/upload';
 import { DataBase } from '../database';
@@ -14,13 +13,13 @@ import { Listeners } from '../../listeners/Listerners';
 export class App {
 
     private app: Express;
-    private routes: IRoute<AbstractController>[];
+    private routes: IRoute[];
     private db: DataBase;
     private httpServer: http.Server
     private io: Server;
     private listener: Listeners;
 
-    constructor(app: Express, db: DataBase, routes: IRoute<AbstractController>[]) {
+    constructor(app: Express, db: DataBase, routes: IRoute[]) {
         this.app = app;
         this.db = db
         this.routes = routes
@@ -28,6 +27,7 @@ export class App {
 
     public setupRoute() {
         this.routes.forEach((route) => {
+            console.log(`====>[${route.getPrefixRoute()}]<==== - configure all routes:`);
             route.setRouter(Router())
             route.setupRoutes();
             this.app.use(`/${route.getPrefixRoute()}`, route.getRoutes());
@@ -77,13 +77,14 @@ export class App {
         this.listener = new Listeners(this.io);
 
         this.io.on('connection', (socket: socketio.Socket) => {
-            console.log('client connected: ' + socket.id);
-            this.listener.addUserSocket(socket)
-        })
-        this.io.on('disconnect', (socket: socketio.Socket) => {
-            console.log('client desconnected: ' + socket.id);
-        })
-
+            const error = this.listener.addUserSocket(socket);
+            if (error) {
+                socket.disconnect(true);
+            }
+            socket.on('disconnect', () => {
+                this.listener.removeUserSocket(socket.id);
+            });
+        });
     }
 
     public startApp() {

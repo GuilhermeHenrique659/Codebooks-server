@@ -10,7 +10,7 @@ export class NotificationSubject implements ISubject {
 
     public remove(observer: IObserver): void {
         const index = this.observerList.indexOf(observer);
-        this.observerList.slice(index, 1);
+        this.observerList.splice(index, 1);
     }
 
     public async notify(data: any) {

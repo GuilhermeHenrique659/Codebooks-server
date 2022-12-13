@@ -38,8 +38,13 @@ export class Listeners {
                 userId: token
             }));
         } catch (error) {
-            console.log(error);
+            return error
         }
+    }
+
+    public removeUserSocket(clienteId: string) {
+        const index = this.userSockets.findIndex((user) => user.clienId === clienteId);
+        this.userSockets.splice(index, 1);
     }
 
     public sendEvents(userId: string, listenerName: string, data: any) {
