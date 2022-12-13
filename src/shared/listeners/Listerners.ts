@@ -1,5 +1,4 @@
 import { Server, Socket } from "socket.io";
-import { app } from "../infra/http";
 import { AuthenticateMiddleware } from "../middleware/AuthenticationMiddleware";
 
 class UserSocket {

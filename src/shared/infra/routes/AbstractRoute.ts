@@ -20,7 +20,7 @@ export abstract class AbstractRoute<
 
     private router: Router;
 
-    constructor(controller: C, private validation?: new () => V) {
+    constructor(controller: C, validation?: new () => V) {
         this.controller = controller
         this.validationMiddleware = new ValidationMiddleware(validation);
     }
@@ -46,6 +46,6 @@ export abstract class AbstractRoute<
                 this.validationMiddleware.executeValidate(routeMethod.validation),
                 ExpressAdapter.RouterAdapter(this.controller, routeMethod.controller, routeMethod.responseCode)
             );
-        })
+        });
     }
 }

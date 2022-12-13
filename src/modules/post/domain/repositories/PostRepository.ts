@@ -1,4 +1,3 @@
-import { Repository } from "typeorm";
 import { IRepositoryAdapter } from "../../../../shared/adapter/IRepositoryAdapter";
 import { Like } from "../entities/Like";
 import { Post } from "../entities/Post";
