@@ -1,9 +1,8 @@
-import { ControllerInput, ControllerOutput } from "../adapter/ControllerBoundary";
-import { IAbstractServiceFactory } from "../services/IAbstractServiceFactory";
+import { ControllerInput } from "../adapter/ControllerBoundary";
 
 
 export abstract class AbstractController {
-    public async exeMethod(method: keyof this, params: ControllerInput): Promise<ControllerOutput> {
+    public async exeMethod(method: keyof this, params: ControllerInput): Promise<object> {
         const methodToBeCall = Reflect.get(this, method);
         if (typeof methodToBeCall !== 'function')
             throw new Error('Method not implemented');

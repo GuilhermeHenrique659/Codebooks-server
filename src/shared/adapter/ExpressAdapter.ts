@@ -33,7 +33,7 @@ export class ExpressAdapter {
                 files: this.FileAdapter(request)
             };
             const controllerOutput = await controller.exeMethod(method, controllerInput);
-            return response.status(statusResponse).json(controllerOutput);
+            return response.status(statusResponse).json({ data: controllerOutput });
         }
     }
 }

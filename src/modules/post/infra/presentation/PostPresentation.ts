@@ -1,5 +1,7 @@
 import { Post } from '../../domain/entities/Post';
 import { IPostPaginate } from '../../domain/repositories/IPostRepostirory';
+import { IPostListOutput } from '../controller/controllerOutput/IPostListOutput';
+
 
 export class PostPresentation {
     static getPostList(postList: IPostPaginate) {

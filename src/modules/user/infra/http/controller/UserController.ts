@@ -1,4 +1,4 @@
-import { ControllerInput, ControllerOutput } from "../../../../../shared/adapter/ControllerBoundary";
+import { ControllerInput } from "../../../../../shared/adapter/ControllerBoundary";
 import { AbstractController } from "../../../../../shared/controller/AbstractController";
 import AppError from "../../../../../shared/errors/AppError";
 import { ICreateUserServiceDTO } from "../../../domain/services/createUserServices/CreateUserServiceDTO";
@@ -13,7 +13,7 @@ export class UserController extends AbstractController {
         super();
     }
 
-    public async updateUserAvatarHandle(request: ControllerInput): Promise<ControllerOutput<IGetUserOutput>> {
+    public async updateUserAvatarHandle(request: ControllerInput): Promise<IGetUserOutput> {
         const { files } = request;
         const id = request.user?.id;
 
@@ -24,38 +24,28 @@ export class UserController extends AbstractController {
             avatar: files
         })
 
-        return {
-            data: UserPresentation.getUserResponse(user)
-        }
+        return UserPresentation.getUserResponse(user)
     }
 
-    public async UpdateUserHandle(request: ControllerInput<Omit<IUpdateUserServiceDTO, 'id'>>): Promise<ControllerOutput<IGetUserOutput>> {
+    public async UpdateUserHandle(request: ControllerInput<Omit<IUpdateUserServiceDTO, 'id'>>): Promise<IGetUserOutput> {
         const id = request.user?.id
-
-
         const user = await this.usersService.getUpdateUser().execute({ id: id as string, ...request.data })
 
-        return {
-            data: UserPresentation.getUserResponse(user)
-        }
+        return UserPresentation.getUserResponse(user)
     }
 
-    public async createUserHandle(request: ControllerInput<ICreateUserServiceDTO>): Promise<ControllerOutput<IGetUserOutput>> {
+    public async createUserHandle(request: ControllerInput<ICreateUserServiceDTO>): Promise<IGetUserOutput> {
         const user = await this.usersService.getCreateUser().execute(request.data);
 
-        return {
-            data: UserPresentation.getUserResponse(user)
-        }
+        return UserPresentation.getUserResponse(user)
     }
 
-    public async createUserSessionHandle(resquest: ControllerInput<ICreateUserSessionServiceDTO>): Promise<ControllerOutput<ICreateSessionResponse>> {
+    public async createUserSessionHandle(resquest: ControllerInput<ICreateUserSessionServiceDTO>): Promise<ICreateSessionResponse> {
         const token = await this.usersService.getCreateSession().execute(resquest.data)
 
         return {
-            data: {
-                ...token,
-                userExits: UserPresentation.getUserResponse(token.userExits)
-            }
+            ...token,
+            userExits: UserPresentation.getUserResponse(token.userExits)
         }
     }
 }

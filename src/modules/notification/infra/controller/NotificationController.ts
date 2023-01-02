@@ -1,4 +1,4 @@
-import { ControllerInput, ControllerOutput } from "../../../../shared/adapter/ControllerBoundary";
+import { ControllerInput } from "../../../../shared/adapter/ControllerBoundary";
 import { AbstractController } from "../../../../shared/controller/AbstractController";
 import { Notification } from "../../domain/entities/Notification";
 import { ICreatePostLikeNotificationDTO } from "../../domain/service/CreatePostLikeNotification/CreatePostLikeNotificationDTO";
@@ -11,33 +11,26 @@ export class NotificationController extends AbstractController {
         super();
     }
 
-    public async createPostLikeNotificationHandle(request: ControllerInput<ICreatePostLikeNotificationDTO>): Promise<ControllerOutput<Notification>> {
+    public async createPostLikeNotificationHandle(request: ControllerInput<ICreatePostLikeNotificationDTO>): Promise<Notification> {
         const { postId } = request.data
-
         const notification = await this.notificationServiceFactory.getCreatePostLikeNotifcation().execute({ postId });
 
-        return {
-            data: notification
-        }
+        return notification
     }
 
-    public async listNotificationHandle(request: ControllerInput): Promise<ControllerOutput<Notification[]>> {
+    public async listNotificationHandle(request: ControllerInput): Promise<Notification[]> {
         const id = request.user?.id as string;
-
         const notifiactions = await this.notificationServiceFactory.getListNotificationService().execute(id);
 
-        return {
-            data: notifiactions
-        }
+        return notifiactions
     }
 
-    public async deleteNotificationHandle(request: ControllerInput<IDeleteNotificationServiceDTO>): Promise<ControllerOutput<boolean>> {
+    public async deleteNotificationHandle(request: ControllerInput<IDeleteNotificationServiceDTO>): Promise<{ isDeleted: boolean }> {
         const { notificationId } = request.data
-
         await this.notificationServiceFactory.getDeleteNotificationService().execute({ notificationId });
 
         return {
-            data: true
+            isDeleted: true
         }
     }
 }

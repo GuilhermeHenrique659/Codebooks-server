@@ -1,4 +1,4 @@
-import { ControllerInput, ControllerOutput } from "../../../../shared/adapter/ControllerBoundary";
+import { ControllerInput } from "../../../../shared/adapter/ControllerBoundary";
 import { AbstractController } from "../../../../shared/controller/AbstractController";
 import { ISubject } from "../../../../shared/observer/ISubject";
 import { AddLikeNotificationObserver } from "../../../notification/infra/observer/AddLikeNotificationObserver";
@@ -13,7 +13,7 @@ export class PostController extends AbstractController {
         private _notificationEvent: ISubject) {
         super()
     }
-    public async createPostHandle(request: ControllerInput<Omit<ICreatePostServiceDTO, 'user_id' | 'like'>>): Promise<ControllerOutput<Post>> {
+    public async createPostHandle(request: ControllerInput<Omit<ICreatePostServiceDTO, 'user_id' | 'like'>>): Promise<Post> {
         const { title, description } = request.data;
         const id = request.user?.id;
 
@@ -24,12 +24,10 @@ export class PostController extends AbstractController {
             user_id: id as string
         });
 
-        return {
-            data: post
-        };
+        return post
     }
 
-    public async addLikeHandle(request: ControllerInput): Promise<ControllerOutput<{ likeIsAdd: boolean }>> {
+    public async addLikeHandle(request: ControllerInput): Promise<{ likeIsAdd: boolean }> {
         const { postId } = request.data;
         const id = request.user?.id;
 
@@ -39,27 +37,21 @@ export class PostController extends AbstractController {
 
         await this._notificationEvent.notify(postId)
         return {
-            data: {
-                likeIsAdd: true
-            }
+            likeIsAdd: true
         }
     }
 
-    public async ListPostHandle(request: ControllerInput): Promise<ControllerOutput<IPostListOutput>> {
+    public async ListPostHandle(request: ControllerInput): Promise<IPostListOutput> {
         const page = request.data.page ? Number(request.data.page) : 1;
         const limit = request.data.limit ? Number(request.data.limit) : 3;
         const userId = request.user?.id;
-
 
         const posts = await this._postServiceFactory.getListPostSerive().execute({
             page,
             limit,
             userId
         });
-
-        return {
-            data: PostPresentation.getPostList(posts)
-        }
+        return PostPresentation.getPostList(posts)
     }
 
 }
