@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import AppError from "../errors/AppError";
 import { AbstractValidation } from "../validation/AbstractValidation";
+import { ValidationResult } from "joi";
 
 
 export class ValidationMiddleware<V extends AbstractValidation | undefined> {
@@ -16,9 +17,13 @@ export class ValidationMiddleware<V extends AbstractValidation | undefined> {
         if (typeof methodToBeCall !== 'function')
             next();
 
-        const { error } = methodToBeCall(request, response, next);
+        const { error } = methodToBeCall(request, response, next) as ValidationResult;
 
-        if (error) throw new AppError(error)
+        if (error) {
+            const errorList: string[] = [];
+            error.details.forEach(detail => errorList.push(detail.message));
+            throw new AppError(errorList)
+        }
 
         next();
     }

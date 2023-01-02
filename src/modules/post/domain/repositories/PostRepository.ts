@@ -30,7 +30,7 @@ export class PostRepository implements IPostRepository {
             per_page: take,
             total: count,
             current_page: page,
-            data: posts
+            posts
         }
     }
 

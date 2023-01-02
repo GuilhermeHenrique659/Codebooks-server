@@ -12,7 +12,7 @@ export interface IPostPaginate {
     per_page: number;
     total: number;
     current_page: number;
-    data: Post[];
+    posts: Post[];
 }
 
 export interface IPostRepository {

@@ -7,7 +7,7 @@ export class PostPresentation {
     static getPostList(postList: IPostPaginate) {
         return {
             ...postList,
-            data: postList.data.flatMap((post) => {
+            data: postList.posts.flatMap((post) => {
                 return {
                     ...post,
                     user: {
