@@ -17,7 +17,7 @@ export interface IPostPaginate {
 
 export interface IPostRepository {
     save(post: Post): Promise<Post>;
-    findById(id: string): Promise<Post | null>;
+    findById(id: string, includedRelationShip: boolean): Promise<Post | null>;
     findAll({ page, skip, take }: SeachParams): Promise<IPostPaginate>
     addLike(like: Like): Promise<void>
 }

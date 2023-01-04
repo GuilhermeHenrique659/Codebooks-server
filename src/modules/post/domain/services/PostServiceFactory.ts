@@ -4,6 +4,7 @@ import { IPostRepository } from "../repositories/IPostRepostirory";
 import { AddLikePostService } from "./AddLikePostService/AddLikePostService";
 import { CreatePostService } from "./CreatePostService/CreatePostService";
 import { ListPostService } from "./ListPostService/ListPostService";
+import { ShowPostService } from "./ShowPostService/ShowPostService";
 
 export class PostServiceFactory implements IAbstractServiceFactory {
     constructor(private _postRepository: IPostRepository,
@@ -19,5 +20,9 @@ export class PostServiceFactory implements IAbstractServiceFactory {
 
     public getAddLikeService(): AddLikePostService {
         return new AddLikePostService(this._postRepository);
+    }
+
+    public getShowPostService(): ShowPostService {
+        return new ShowPostService(this._postRepository);
     }
 }

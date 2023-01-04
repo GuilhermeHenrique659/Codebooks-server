@@ -21,4 +21,12 @@ export class PostValidation extends AbstractValidation {
         })
         return Schema.validate(request.query)
     }
+
+    public showPostValidate(request: Request) {
+        const Schema = Joi.object({
+            postId: Joi.string().uuid().required()
+        });
+
+        return Schema.validate(request.params)
+    }
 }

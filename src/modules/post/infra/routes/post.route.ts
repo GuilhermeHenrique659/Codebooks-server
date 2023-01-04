@@ -28,6 +28,13 @@ class PostRoute extends AbstractRoute<PostController, PostValidation> {
                 url: '/addLike',
                 controller: 'addLikeHandle',
                 authentication: true
+            },
+            {
+                method: HttpMethod.GET,
+                url: '/:postId',
+                controller: 'showPostHandle',
+                authentication: true,
+                validation: 'showPostValidate'
             }
         ]
     }

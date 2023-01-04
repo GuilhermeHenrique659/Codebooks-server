@@ -1,10 +1,10 @@
 import { IFileProvider } from "../../../../shared/providers/IFileProviders";
 import { IAbstractServiceFactory } from "../../../../shared/services/IAbstractServiceFactory";
-import { IService } from "../../../../shared/services/IService";
 import { IHashProvider } from "../providers/IHashProvider";
 import { IUserRepository } from "../repositories/IUserRepository";
 import { CreateUserService } from "./createUserServices/CreateUserService";
 import { CreateUserSessionService } from "./createUserSessionService/CreateUserSessionService";
+import { ShowUserService } from "./showUserService/showUserService";
 import { UpdateUserAvatarService } from "./updateUserAvatarService/UpdateUserAvatarService";
 import { UpdateUserService } from "./updateUserService/UpdateUserService";
 
@@ -25,8 +25,12 @@ export class UserServiceFactory implements IAbstractServiceFactory {
         return new UpdateUserAvatarService(this._userRepository, this._fileProvider);
     }
 
-    public getUpdateUser(){
+    public getUpdateUser() {
         return new UpdateUserService(this._userRepository, this._hashProvider);
+    }
+
+    public getShowUser() {
+        return new ShowUserService(this._userRepository);
     }
 
 }

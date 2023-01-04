@@ -33,6 +33,13 @@ class UserRoutes extends AbstractRoute<UserController, UserValidation> {
                 controller: 'UpdateUserHandle',
                 authentication: true,
                 validation: 'validateUpdateUser'
+            },
+            {
+                method: HttpMethod.GET,
+                url: '/:userId',
+                controller: 'showUserHandle',
+                authentication: true,
+                validation: 'validationShowUser'
             }
         ]
     }

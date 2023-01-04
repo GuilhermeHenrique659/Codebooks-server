@@ -23,6 +23,14 @@ export class UserValidation extends AbstractValidation {
         return Schema.validate(request.body, { abortEarly: false })
     }
 
+    public validationShowUser(request: Request) {
+        const Schema = Joi.object({
+            userId: Joi.string().uuid().required(),
+        });
+
+        return Schema.validate(request.params, { abortEarly: false });
+    }
+
     public validateUpdateUser(request: Request) {
         const Schema = Joi.object({
             name: Joi.string(),

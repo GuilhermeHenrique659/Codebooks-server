@@ -8,6 +8,7 @@ import { UserServiceFactory } from "../../../domain/services/UserServiceFactory"
 import { ICreateSessionResponse } from "./controllerOutput/ICreateSessionOutput";
 import { UserPresentation } from "../presentation/UserPresentation";
 import { IGetUserOutput } from "./controllerOutput/IGetUserOutput";
+import { IShowUserService } from "../../../domain/services/showUserService/IShowUserService";
 export class UserController extends AbstractController {
     constructor(private usersService: UserServiceFactory) {
         super();
@@ -38,6 +39,12 @@ export class UserController extends AbstractController {
         const user = await this.usersService.getCreateUser().execute(request.data);
 
         return UserPresentation.getUserResponse(user)
+    }
+
+    public async showUserHandle(request: ControllerInput<IShowUserService>): Promise<IGetUserOutput> {
+        const user = await this.usersService.getShowUser().execute(request.data);
+
+        return UserPresentation.getUserResponse(user);
     }
 
     public async createUserSessionHandle(resquest: ControllerInput<ICreateUserSessionServiceDTO>): Promise<ICreateSessionResponse> {

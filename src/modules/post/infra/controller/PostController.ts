@@ -5,6 +5,7 @@ import { AddLikeNotificationObserver } from "../../../notification/infra/observe
 import { Post } from "../../domain/entities/Post";
 import { ICreatePostServiceDTO } from "../../domain/services/CreatePostService/CreatePostServiceDTO";
 import { PostServiceFactory } from "../../domain/services/PostServiceFactory";
+import { IShowPostServiceDTO } from "../../domain/services/ShowPostService/IShowPostServiceDTO";
 import { PostPresentation } from "../presentation/PostPresentation";
 import { IPostListOutput } from "./controllerOutput/IPostListOutput";
 
@@ -25,6 +26,12 @@ export class PostController extends AbstractController {
         });
 
         return post
+    }
+
+    public async showPostHandle(request: ControllerInput<IShowPostServiceDTO>) {
+        const post = await this._postServiceFactory.getShowPostService().execute(request.data);
+
+        return PostPresentation.getPost(post);
     }
 
     public async addLikeHandle(request: ControllerInput): Promise<{ likeIsAdd: boolean }> {

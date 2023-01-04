@@ -38,11 +38,14 @@ export class PostRepository implements IPostRepository {
         await this._likeDataSource.insert(like)
     }
 
-    public async findById(id: string): Promise<Post | null> {
+    public async findById(id: string, includedRelationShip = false): Promise<Post | null> {
         return this._postDataSource.findOne({
             where: {
                 id: id
-            }
+            },
+            relations: {
+                user: includedRelationShip
+            },
         })
     }
 }
