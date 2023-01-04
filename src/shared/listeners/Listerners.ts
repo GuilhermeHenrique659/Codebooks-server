@@ -35,7 +35,7 @@ export class Listeners {
             const token = AuthenticateMiddleware.AuthenticatedToken(socket.handshake.headers.token as string);
             this.userSockets.push(new UserSocket({
                 clienId: socket.id,
-                userId: token
+                userId: token,
             }));
         } catch (error) {
             return error
@@ -49,7 +49,8 @@ export class Listeners {
 
     public sendEvents(userId: string, listenerName: string, data: any) {
         const clientIds = this.getClientUserId(userId);
-        this.socket.to(clientIds).emit(listenerName, data);
+        if (clientIds.length)
+            this.socket.to(clientIds).emit(listenerName, data);
     }
 
 }

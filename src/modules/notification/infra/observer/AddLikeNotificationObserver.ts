@@ -4,12 +4,11 @@ import { NotificationControllerFactory } from "../controller/NotificationControl
 
 export class AddLikeNotificationObserver implements IObserver {
     public async update(postId: string): Promise<void> {
-        const { data } = await NotificationControllerFactory().createPostLikeNotificationHandle({
+        const notification = await NotificationControllerFactory().createPostLikeNotificationHandle({
             data: {
                 postId
             },
         })
-
-        app.getListener().sendEvents(data.user_id, 'notification', data);
+        app.getListener().sendEvents(notification.user_id, 'notification', notification);
     }
 }

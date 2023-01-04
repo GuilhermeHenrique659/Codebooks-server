@@ -44,7 +44,7 @@ export class PostController extends AbstractController {
     public async ListPostHandle(request: ControllerInput): Promise<IPostListOutput> {
         const page = request.data.page ? Number(request.data.page) : 1;
         const limit = request.data.limit ? Number(request.data.limit) : 3;
-        const userId = request.user?.id;
+        const userId = request.data.userId
 
         const posts = await this._postServiceFactory.getListPostSerive().execute({
             page,

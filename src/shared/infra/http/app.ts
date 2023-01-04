@@ -73,9 +73,8 @@ export class App {
     }
 
     public setupSocket() {
-        this.io = new socketio.Server(this.httpServer);
+        this.io = new socketio.Server(this.httpServer, { cors: { origin: ['http://localhost:3000', 'http://192.168.0.103:3000'] } });
         this.listener = new Listeners(this.io);
-
         this.io.on('connection', (socket: socketio.Socket) => {
             const error = this.listener.addUserSocket(socket);
             if (error) {

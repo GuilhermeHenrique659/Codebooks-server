@@ -47,7 +47,7 @@ export const connection = new DataSource({
     database: "codebooks",
     password: 'docker',
     synchronize: true,
-    logging: true,
+    logging: false,
     migrations: [
         CreateUser1665668135024,
         CreatePost1666009543896,

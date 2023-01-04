@@ -2,15 +2,15 @@ import { IObserver } from "../../../../shared/observer/IObserver";
 import { ISubject } from "../../../../shared/observer/ISubject";
 
 export class NotificationSubject implements ISubject {
-    private observerList: Array<IObserver> = [];
+    private observerList: Set<IObserver> = new Set<IObserver>();
 
     public add(observer: IObserver) {
-        this.observerList.push(observer);
+        this.observerList.clear();
+        this.observerList.add(observer);
     }
 
     public remove(observer: IObserver): void {
-        const index = this.observerList.indexOf(observer);
-        this.observerList.splice(index, 1);
+        this.observerList.delete(observer);
     }
 
     public async notify(data: any) {
