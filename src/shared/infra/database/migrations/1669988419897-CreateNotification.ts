@@ -16,6 +16,10 @@ export class CreateNotification1669988419897 implements MigrationInterface {
                     type: 'text',
                 },
                 {
+                    name: 'type',
+                    type: 'varchar'
+                },
+                {
                     name: 'link',
                     type: 'varchar'
                 },

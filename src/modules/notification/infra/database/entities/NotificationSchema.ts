@@ -11,6 +11,9 @@ export const NotificationEntitySchema = new EntitySchema<Notification>({
         message: {
             type: 'text',
         },
+        type: {
+            type: 'varchar',
+        },
         link: {
             type: 'varchar'
         },

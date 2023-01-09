@@ -95,7 +95,7 @@ export class App {
         this.setupApp();
         this.httpServer = http.createServer(this.app);
         this.setupSocket()
-        this.httpServer.listen(3333, () => {
+        this.httpServer.listen(3333, '0.0.0.0', () => {
             console.log("Server start in host: http://localhost:3333/");
         })
     }

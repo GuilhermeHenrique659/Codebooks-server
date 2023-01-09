@@ -1,5 +1,6 @@
 import { IPostRepository } from "../../../post/domain/repositories/IPostRepostirory";
 import { INotificationRepository } from "../repositories/INotificationRepository";
+import { CreateFriendshipRequestNotificationService } from "./CreateFriendshipRequestNotification/CreateFriendshipRequestNotificationService";
 import { CreatePostLikeNotificationService } from "./CreatePostLikeNotification/CreatePostLikeNotificationService";
 import { DeleteNofiticationService } from "./DeleteNotificationService/DeleteNotificationService";
 import { ListNotificationService } from "./ListNotificationService/ListNotificationService";
@@ -10,6 +11,10 @@ export class NotificationServiceFactory {
 
     public getCreatePostLikeNotifcation() {
         return new CreatePostLikeNotificationService(this.notificationRepository, this.postRepository);
+    }
+
+    public getCreateRequestFriendshipNotification() {
+        return new CreateFriendshipRequestNotificationService(this.notificationRepository);
     }
 
     public getListNotificationService() {

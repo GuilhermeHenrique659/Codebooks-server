@@ -12,6 +12,8 @@ import { AddUserInPost1666009768966 } from './migrations/1666009768966-AddUserIn
 import { CreateLike1667828962841 } from './migrations/1667828962841-CreateLike'
 import { CreateNotification1669988419897 } from './migrations/1669988419897-CreateNotification'
 import { AddUserToNotification1669988529548 } from './migrations/1669988529548-AddUserToNotification'
+import { CreateFriendship1673021678722 } from './migrations/1673021678722-CreateFriendship'
+import { FriendshipEntitySchema } from '../../../modules/friendship/infra/database/entities/FriendshipEntity'
 
 
 export class DataBase {
@@ -46,8 +48,8 @@ export const connection = new DataSource({
     username: "postgres",
     database: "codebooks",
     password: 'docker',
-    synchronize: true,
-    logging: false,
+    synchronize: false,
+    logging: true,
     migrations: [
         CreateUser1665668135024,
         CreatePost1666009543896,
@@ -55,12 +57,14 @@ export const connection = new DataSource({
         AddUserInPost1666009768966,
         CreateNotification1669988419897,
         AddUserToNotification1669988529548,
+        CreateFriendship1673021678722,
     ],
     entities: [
         userEntitySchema,
         PostEntitySchema,
         LikeEntitySchema,
         NotificationEntitySchema,
+        FriendshipEntitySchema,
     ]
 });
 

@@ -9,6 +9,8 @@ export class Notification implements IEntity {
 
     public link: string;
 
+    public type: string
+
     public user_id: string
 
     constructor(props: Omit<Notification, 'id' | keyof Notification>, id?: string) {
