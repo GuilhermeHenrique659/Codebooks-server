@@ -3,7 +3,7 @@ import { IEntity } from "./IEntity";
 import { IRepositoryAdapter } from "./IRepositoryAdapter";
 
 export abstract class AbstractRepositoryAdapter implements IRepositoryAdapter<IEntity> {
-    constructor(private _typeormRepository: Repository<IEntity>, private Entity: new (props: any, id?: string) => IEntity) { }
+    constructor(protected _typeormRepository: Repository<IEntity>, private Entity: new (props: any, id?: string) => IEntity) { }
 
     public async findOne(option?: any): Promise<IEntity | null> {
         const dataBaseEntity = await this._typeormRepository.findOne(option);

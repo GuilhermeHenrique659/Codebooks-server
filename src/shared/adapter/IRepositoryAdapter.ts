@@ -1,3 +1,5 @@
+import { Repository } from "typeorm";
+
 export interface IRepositoryAdapter<T> {
     save(entity: T, option?: any): Promise<T>;
     insert(entity: T): Promise<T>;

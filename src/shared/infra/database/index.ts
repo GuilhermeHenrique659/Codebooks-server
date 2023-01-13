@@ -14,6 +14,7 @@ import { CreateNotification1669988419897 } from './migrations/1669988419897-Crea
 import { AddUserToNotification1669988529548 } from './migrations/1669988529548-AddUserToNotification'
 import { CreateFriendship1673021678722 } from './migrations/1673021678722-CreateFriendship'
 import { FriendshipEntitySchema } from '../../../modules/friendship/infra/database/entities/FriendshipEntity'
+import { CreatePostFiles1673543275750 } from './migrations/1673543275750-CreatePostFiles'
 
 
 export class DataBase {
@@ -58,6 +59,7 @@ export const connection = new DataSource({
         CreateNotification1669988419897,
         AddUserToNotification1669988529548,
         CreateFriendship1673021678722,
+        CreatePostFiles1673543275750
     ],
     entities: [
         userEntitySchema,
