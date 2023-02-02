@@ -3,10 +3,8 @@ import { Like } from "../entities/Like";
 import { Post } from "../entities/Post";
 import { IPostPaginate, IPostRepository, SeachParams } from "./IPostRepostirory";
 
-
 export class PostRepository implements IPostRepository {
-    constructor(private _postDataSource: IRepositoryAdapter<Post>,
-        private _likeDataSource: IRepositoryAdapter<Like>) { }
+    constructor(private _postDataSource: IRepositoryAdapter<Post>, private _likeDataSource: IRepositoryAdapter<Like>) {}
 
     public async save(post: Post): Promise<Post> {
         return this._postDataSource.save(post);
@@ -16,13 +14,14 @@ export class PostRepository implements IPostRepository {
         const posts = await this._postDataSource.find({
             ...(userId && { where: { user_id: userId } }),
             relations: {
-                user: true
+                user: true,
+                files: true,
             },
             skip: skip,
             take: take,
             order: {
-                created_at: 'DESC'
-            }
+                created_at: "DESC",
+            },
         });
         const count = await this._postDataSource.count();
 
@@ -30,22 +29,23 @@ export class PostRepository implements IPostRepository {
             per_page: take,
             total: count,
             current_page: page,
-            posts
-        }
+            posts,
+        };
     }
 
     public async addLike(like: Like): Promise<void> {
-        await this._likeDataSource.insert(like)
+        await this._likeDataSource.insert(like);
     }
 
     public async findById(id: string, includedRelationShip = false): Promise<Post | null> {
         return this._postDataSource.findOne({
             where: {
-                id: id
+                id: id,
             },
             relations: {
-                user: includedRelationShip
+                user: includedRelationShip,
+                files: includedRelationShip,
             },
-        })
+        });
     }
 }

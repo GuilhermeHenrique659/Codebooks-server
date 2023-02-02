@@ -2,7 +2,6 @@ import { Request } from "express";
 import Joi from "joi";
 import { AbstractValidation } from "../../../shared/validation/AbstractValidation";
 
-
 export class PostValidation extends AbstractValidation {
     public createPostValidate(request: Request) {
         const Schema = Joi.object({
@@ -18,15 +17,15 @@ export class PostValidation extends AbstractValidation {
             page: Joi.number(),
             limit: Joi.number(),
             userId: Joi.string(),
-        })
-        return Schema.validate(request.query)
+        });
+        return Schema.validate(request.query);
     }
 
     public showPostValidate(request: Request) {
         const Schema = Joi.object({
-            postId: Joi.string().uuid().required()
+            postId: Joi.string().uuid().required(),
         });
 
-        return Schema.validate(request.params)
+        return Schema.validate(request.params);
     }
 }

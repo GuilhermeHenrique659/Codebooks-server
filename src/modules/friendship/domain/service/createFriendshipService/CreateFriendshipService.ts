@@ -5,10 +5,10 @@ import { IFriendshipRepository } from "../../repositories/IFriendshipRepository"
 import { ICreateFriendshipServiceDTO } from "./ICreateFriendshipServiceDTO";
 
 export class CreateFriendshipService {
-    constructor(private _friendshipRepository: IFriendshipRepository, private _userRepository: IUserRepository) { }
+    constructor(private _friendshipRepository: IFriendshipRepository, private _userRepository: IUserRepository) {}
 
     public async execute(data: ICreateFriendshipServiceDTO): Promise<Friendship> {
-        if (data.userId === data.friendId) throw new AppError('users id is a same!')
+        if (data.userId === data.friendId) throw new AppError("users id is a same!");
 
         const user = await this._userRepository.findById(data.userId);
         const friend = await this._userRepository.findById(data.friendId);
@@ -18,16 +18,17 @@ export class CreateFriendshipService {
         const friendship = new Friendship({
             user_id: data.userId,
             friend_id: data.friendId,
-            requestIsAccept: false
+            requestIsAccept: false,
+            user: user,
+            friend: friend,
         });
 
         try {
             await this._friendshipRepository.save(friendship);
         } catch (err) {
-            throw new AppError('friendship is requested!');
+            throw new AppError("friendship is requested!");
         }
 
-        friendship.user = user;
-        return friendship
+        return friendship;
     }
 }

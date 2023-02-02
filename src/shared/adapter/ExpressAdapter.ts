@@ -4,24 +4,23 @@ import { SuccessResponse } from "../infra/routes/IRoutesMethod";
 import { File } from "../types/Files";
 import { ControllerInput } from "./ControllerBoundary";
 
-
 export class ExpressAdapter {
     static FileAdapter(request: Request): File[] | undefined {
-        if (!request.files) return
+        if (!request.files) return;
         if (Array.isArray(request.files.file)) {
             return request.files.file.flatMap((file) => {
                 return {
                     name: file.name,
                     data: file.data,
-                }
-            })
-
+                };
+            });
         } else {
-            return [{
-                name: request.files.file.name,
-                data: request.files.file.data,
-            }]
-
+            return [
+                {
+                    name: request.files.file.name,
+                    data: request.files.file.data,
+                },
+            ];
         }
     }
 
@@ -30,10 +29,10 @@ export class ExpressAdapter {
             const controllerInput: ControllerInput = {
                 data: { ...request.body, ...request.params, ...request.query },
                 user: request.user,
-                files: this.FileAdapter(request)
+                files: this.FileAdapter(request),
             };
             const controllerOutput = await controller.exeMethod(method, controllerInput);
             return response.status(statusResponse).json({ data: controllerOutput });
-        }
+        };
     }
 }

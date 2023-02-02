@@ -2,5 +2,5 @@ export interface ICreatePostServiceDTO {
     title: string;
     description: string;
     like: number;
-    user_id: string
+    user_id: string;
 }

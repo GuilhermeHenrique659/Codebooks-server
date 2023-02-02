@@ -1,7 +1,6 @@
 import { ControllerInput } from "../../../../shared/adapter/ControllerBoundary";
 import { AbstractController } from "../../../../shared/controller/AbstractController";
 import { ISubject } from "../../../../shared/observer/ISubject";
-import { CreateFriendshipRequestNotificationService } from "../../../notification/domain/service/CreateFriendshipRequestNotification/CreateFriendshipRequestNotificationService";
 import { DeleteNotificationObserver } from "../../../notification/infra/observer/DeleteNotificationObserver";
 import { FriendshipRequestObserver } from "../../../notification/infra/observer/FriendshipRequestObserver";
 import { Friendship } from "../../domain/entities/Friendship";
@@ -27,6 +26,7 @@ export class FriendshipController extends AbstractController {
         this._notificationEvent.notify({
             notificationId: notificationId
         });
+
         return true;
     }
 

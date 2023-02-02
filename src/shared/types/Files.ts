@@ -1,8 +1,4 @@
-
-
 export type File = {
-
-    name: string
-    data: Buffer
-
-}
+    name: string;
+    data: Buffer;
+};

@@ -1,5 +1,4 @@
 import AppError from "../../../../../shared/errors/AppError";
-import { Friendship } from "../../entities/Friendship";
 import { IFriendshipRepository } from "../../repositories/IFriendshipRepository";
 
 export class AcceptFriendshipRequestService {

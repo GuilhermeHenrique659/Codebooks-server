@@ -1,6 +1,8 @@
 import { ControllerInput } from "../../../../shared/adapter/ControllerBoundary";
 import { AbstractController } from "../../../../shared/controller/AbstractController";
 import { ISubject } from "../../../../shared/observer/ISubject";
+import { Files } from "../../../files/domain/entities/File";
+import { FilesServiceFactory } from "../../../files/domain/service/FilesServiceFactory";
 import { AddLikeNotificationObserver } from "../../../notification/infra/observer/AddLikeNotificationObserver";
 import { Post } from "../../domain/entities/Post";
 import { ICreatePostServiceDTO } from "../../domain/services/CreatePostService/CreatePostServiceDTO";
@@ -10,22 +12,30 @@ import { PostPresentation } from "../presentation/PostPresentation";
 import { IPostListOutput } from "./controllerOutput/IPostListOutput";
 
 export class PostController extends AbstractController {
-    constructor(private _postServiceFactory: PostServiceFactory,
-        private _notificationEvent: ISubject) {
-        super()
+    constructor(
+        private _postServiceFactory: PostServiceFactory,
+        private _fileServiceFactory: FilesServiceFactory,
+        private _notificationEvent: ISubject,
+    ) {
+        super();
     }
-    public async createPostHandle(request: ControllerInput<Omit<ICreatePostServiceDTO, 'user_id' | 'like'>>): Promise<Post> {
+    public async createPostHandle(request: ControllerInput<Omit<ICreatePostServiceDTO, "user_id" | "like">>): Promise<Post> {
         const { title, description } = request.data;
+        const files = request.files;
         const id = request.user?.id;
 
         const post = await this._postServiceFactory.getCreatePostService().execute({
             title,
             description,
             like: 0,
-            user_id: id as string
+            user_id: id as string,
         });
 
-        return post
+        if (files) {
+            post.files = await this._fileServiceFactory.getCreateFileService().execute(post.id, files);
+        }
+
+        return post;
     }
 
     public async showPostHandle(request: ControllerInput<IShowPostServiceDTO>) {
@@ -42,23 +52,22 @@ export class PostController extends AbstractController {
 
         await this._postServiceFactory.getAddLikeService().execute(id as string, postId);
 
-        await this._notificationEvent.notify(postId)
+        await this._notificationEvent.notify(postId);
         return {
-            likeIsAdd: true
-        }
+            likeIsAdd: true,
+        };
     }
 
     public async ListPostHandle(request: ControllerInput): Promise<IPostListOutput> {
         const page = request.data.page ? Number(request.data.page) : 1;
         const limit = request.data.limit ? Number(request.data.limit) : 3;
-        const userId = request.data.userId
+        const userId = request.data.userId;
 
         const posts = await this._postServiceFactory.getListPostSerive().execute({
             page,
             limit,
-            userId
+            userId,
         });
-        return PostPresentation.getPostList(posts)
+        return PostPresentation.getPostList(posts);
     }
-
 }

@@ -1,14 +1,11 @@
-
-
-import { EntitySchema } from 'typeorm';
-import { User } from '../../../domain/entities/User';
-
+import { EntitySchema } from "typeorm";
+import { User } from "../../../domain/entities/User";
 
 export const userEntitySchema = new EntitySchema<User>({
-    name: 'users',
+    name: "users",
     columns: {
         id: {
-            type: 'uuid',
+            type: "uuid",
             primary: true,
         },
         name: {
@@ -16,24 +13,24 @@ export const userEntitySchema = new EntitySchema<User>({
         },
         email: {
             type: String,
-            unique: true
+            unique: true,
         },
         password: {
-            type: String
+            type: String,
         },
         avatar: {
             type: String,
-            nullable: true
-        }
+            nullable: true,
+        },
     },
     relations: {
         posts: {
-            type: 'one-to-many',
-            target: 'posts',
+            type: "one-to-many",
+            target: "posts",
             joinColumn: {
-                name: 'id'
+                name: "id",
             },
-            inverseSide: 'users'
-        }
-    }
+            inverseSide: "users",
+        },
+    },
 });

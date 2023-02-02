@@ -1,7 +1,7 @@
 import { User } from "../../../user/domain/entities/User";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { IEntity } from "../../../../shared/adapter/IEntity";
-
+import { Files } from "../../../files/domain/entities/File";
 
 export class Post implements IEntity {
     public readonly id: string;
@@ -14,13 +14,15 @@ export class Post implements IEntity {
 
     public user: User;
 
+    public files?: Files[];
+
     public user_id: string;
 
     public created_at?: Date;
 
     public updated_at?: Date;
 
-    constructor(props: Omit<Post, keyof Post | 'id'>, id?: string) {
+    constructor(props: Omit<Post, keyof Post | "id">, id?: string) {
         Object.assign(this, props);
         if (!id) {
             this.id = uuidv4();

@@ -18,7 +18,7 @@ export class FriendshipRepository implements IFriendshipRepository {
     }
 
     public async find(userId: string): Promise<Friendship[]> {
-        const friend1 = await this._datasource.find({
+        const friendListWhenUserIsRequester = await this._datasource.find({
             where: {
                 user_id: userId,
                 requestIsAccept: true
@@ -28,7 +28,7 @@ export class FriendshipRepository implements IFriendshipRepository {
             },
         });
 
-        const friend2 = await this._datasource.find({
+        const friendListWhenFriendIsRequester = await this._datasource.find({
             where: {
                 friend_id: userId,
                 requestIsAccept: true
@@ -38,7 +38,7 @@ export class FriendshipRepository implements IFriendshipRepository {
             },
         });
 
-        return [...friend1, ...friend2]
+        return [...friendListWhenUserIsRequester, ...friendListWhenFriendIsRequester]
     }
 
     public async remove(friendship: Friendship): Promise<void> {
